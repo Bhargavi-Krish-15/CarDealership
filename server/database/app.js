@@ -59,16 +59,40 @@ app.get('/fetchReviews/dealer/:id', async (req, res) => {
 // Express route to fetch all dealerships
 app.get('/fetchDealers', async (req, res) => {
 //Write your code here
+    try {
+        const allDealers = await Dealerships.find(); // Use "Dealerships" model
+        res.json(allDealers);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch dealers' });
+    }
 });
 
 // Express route to fetch Dealers by a particular state
 app.get('/fetchDealers/:state', async (req, res) => {
 //Write your code here
+    try {
+        const state = req.params.state;
+        const dealersByState = await Dealerships.find({ state: state }); // Use "Dealerships" model
+        res.json(dealersByState);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch dealers by state' });
+    }
 });
 
 // Express route to fetch dealer by a particular id
 app.get('/fetchDealer/:id', async (req, res) => {
 //Write your code here
+    try {
+        const id = req.params.id;
+        const dealer = await Dealerships.findOne({ id: id }); // Use "id" field (not MongoDB _id)
+        if (dealer) {
+        res.json(dealer);
+        } else {
+        res.status(404).json({ error: 'Dealer not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch dealer by id' });
+    }
 });
 
 //Express route to insert review
